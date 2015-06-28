@@ -1,0 +1,52 @@
+# Plan #
+
+This is the tentative plan for the Ruby APIXU client library. A updated and bit
+more detailed documentation will be provided as the library is developed.
+
+## Structure ##
+
+A Ruby gem, which follows the standard architecture explained under the guide:
+<http://guides.rubygems.org/make-your-own-gem/>.
+
+The core library definitions go under `lib` directory and the test under `spec`.
+The executables used in general development will be under `bin` directory.
+
+The application will depend on `restclient` and `json` - both being the Ruby
+standards for their respective tasks.
+
+## Development Environment ##
+
+To setup the development environment, run:
+
+    ./bin/setup
+
+## Interface ##
+
+The example usage of the library will be something like this:
+
+```ruby
+> require 'apixu'
+> client = Apixu::Client.new "<APIXU KEY>"
+> client.current "Paris"
+{ "current" => <...>, "location" => <...> }
+> client.forecast "Paris", days=3 # days is an optional parameter.
+{ "current" => <...>, "forecast" => <...>, "location" => <...>}
+```
+
+For convenience and to avoid publishing it with the code, the API key can be
+optionally set through the environment variable: `APIXU_KEY`. In this case,
+you can instantiate a client without passing an argument.
+
+    $ export APIXU_KEY=<YOUR KEY>
+    ./bin/console
+    > require 'apixu'
+    > client = Apixu::Client.new
+
+In case of a argument error, the message will be relayed to you via a Ruby
+Exception which can be then handled as per requirements.
+
+## Tests ##
+
+The tests will be written in `rspec`, you can execute them by simply running:
+
+    rake
