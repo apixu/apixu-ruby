@@ -1,11 +1,6 @@
 # Apixu
 
-Welcome to your new gem! In this directory, you'll find the files you need to be
-able to package up your Ruby library into a gem. Put your Ruby code in the file
-`lib/apixu`. To experiment with that code, run `bin/console` for an interactive
-prompt.
-
-TODO: Delete this and the text above, and describe your gem
+This is the client library for apixu's weather api.
 
 ## Installation
 
@@ -25,13 +20,25 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+
+```ruby
+> require 'apixu'
+> client = Apixu::Client.new "<APIXU KEY>"
+> client.current "Paris"
+{ "current" => <...>, "location" => <...> }
+> client.forecast "Paris", days=3 # days is an optional parameter.
+{ "current" => <...>, "forecast" => <...>, "location" => <...>}
+```
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run
-`rake rspec` to run the tests. You can also run `bin/console` for an interactive
-prompt that will allow you to experiment.
+After checking out the repo, run `bin/setup` to install dependencies. Then, to
+test, run:
+
+    TEST_APIXU_KEY=<YOUR APIXU KEY> rake
+
+You can also run `bin/console` for an interactive prompt that will allow you to
+experiment.
 
 To install this gem onto your local machine, run `bundle exec rake install`. To
 release a new version, update the version number in `version.rb`, and then run
@@ -39,7 +46,20 @@ release a new version, update the version number in `version.rb`, and then run
 git commits and tags, and push the `.gem` file to
 [rubygems.org](https://rubygems.org).
 
-## Contributing
+## Tests
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/apixu.
+The output for a successful test run would look something like this:
 
+    $ rake
+    Apixu::Client
+      has a version number
+      allows creating new clients
+      stores API key
+      supports API key environment variable
+      does not allow overriding key
+      constructs urls
+      supports for querying current weather
+      supports for weather forecasts
+
+    Finished in 9.09 seconds (files took 0.61258 seconds to load)
+    8 examples, 0 failures
