@@ -40,33 +40,24 @@ describe Apixu::Client do
     expect(env_client.url :test).to eq(url)
   end
 
+  it 'supports for conditions list' do
+    result = env_client.conditions
+    expect(result).to match_json_schema("conditions")
+  end
+
   it 'supports for querying current weather' do
     result = env_client.current "Paris"
-    expect(result).to include("current")
-    expect(result).to include("location")
+    expect(result).to match_json_schema("current")
   end
 
   it 'supports for weather forecasts' do
     result = env_client.forecast "Paris", days=3
-
-    expect(result).to include("location")
-    expect(result).to include("forecast")
-
-    expect(result["forecast"]["forecastday"].length).to eq(3)
-  end
-
-  it 'supports for conditions list' do
-    result = env_client.conditions
-
-    expect(result.length).to be > 0
+    expect(result).to match_json_schema("forecast")
   end
 
   it 'supports for weather history' do
     result = env_client.history "Paris", since=Date.today()
-
-    expect(result).to include("location")
-    expect(result).to include("forecast")
-    expect(result["forecast"]).to include("forecastday")
+    expect(result).to match_json_schema("history")
   end
 
   it 'supports for weather history error' do
@@ -77,8 +68,6 @@ describe Apixu::Client do
 
   it 'supports for search' do
     result = env_client.search "London"
-
-    expect(result.length).to be > 0
+    expect(result).to match_json_schema("search")
   end
-
 end
