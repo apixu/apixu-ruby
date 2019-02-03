@@ -6,7 +6,7 @@ module Apixu
   class Client
     attr_reader :key
 
-    BASE_URL = "http://api.apixu.com/v1"
+    BASE_URL = "https://api.apixu.com/v1"
 
     def initialize key=nil
       @key = key || ENV["APIXU_KEY"]
