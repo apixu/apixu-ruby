@@ -1,5 +1,6 @@
 require 'apixu/errors'
 require 'rest-client'
+require 'json'
 
 module Apixu
   class Client
