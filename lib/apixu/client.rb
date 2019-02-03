@@ -7,6 +7,8 @@ module Apixu
     attr_reader :key
 
     BASE_URL = "https://api.apixu.com/v1"
+    FORMAT = "json"
+    DOC_WEATHER_CONDITIONS_URL = "https://www.apixu.com/doc/Apixu_weather_conditions"
 
     def initialize key=nil
       @key = key || ENV["APIXU_KEY"]
@@ -17,14 +19,14 @@ module Apixu
     end
 
     def url endpoint
-      "#{BASE_URL}/#{endpoint}.json"
+      "#{BASE_URL}/#{endpoint}.#{FORMAT}"
     end
 
-    def request key, params={}
+    def request url, params={}
       params["key"] = @key
-      result = JSON::parse(RestClient.get url(key), params: params)
+      result = JSON::parse(RestClient.get url, params: params)
 
-      if result["error"]
+      if result.is_a?(Hash) && result["error"]
         raise Errors::Request.new(result["error"]["code"],
                                   result["error"]["message"])
       else
@@ -32,12 +34,16 @@ module Apixu
       end
     end
 
+    def conditions
+      request "#{DOC_WEATHER_CONDITIONS_URL}.#{FORMAT}"
+    end
+
     def current query
-      request :current, q: query
+      request url(:current), q: query
     end
 
     def forecast query, days=1
-      request :forecast, q: query, days: days
+      request url(:forecast), q: query, days: days
     end
   end
 end

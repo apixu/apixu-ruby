@@ -54,4 +54,10 @@ describe Apixu::Client do
 
     expect(result["forecast"]["forecastday"].length).to eq(3)
   end
+
+  it 'supports for conditions list' do
+    result = env_client.conditions
+
+    expect(result.length).to be > 0
+  end
 end
