@@ -55,5 +55,4 @@ describe Apixu::Client do
       client.search ""
     end.to raise_error(RestClient::BadRequest)
   end
-
 end
