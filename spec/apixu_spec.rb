@@ -36,7 +36,7 @@ describe Apixu::Client do
   end
 
   it 'constructs urls' do
-    url = "http://api.apixu.com/v1/test.json"
+    url = "https://api.apixu.com/v1/test.json"
     expect(env_client.url :test).to eq(url)
   end
 
