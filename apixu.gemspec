@@ -6,12 +6,12 @@ require 'apixu/version'
 Gem::Specification.new do |spec|
   spec.name          = "apixu"
   spec.version       = Apixu::VERSION
-  spec.authors       = ["Rohan Jain"]
-  spec.email         = ["crodjer@gmail.com"]
+  spec.authors       = ["Rohan Jain", "Andrei Avram"]
+  spec.email         = ["crodjer@gmail.com", "avramandrei@ymail.com"]
 
   spec.summary       = %q{Ruby library for Apixu Weather API}
-  spec.description   = %q{Ruby library for Apixu Weather API}
-  spec.homepage      = "http://www.apixu.com/"
+  spec.description   = %q{Real-time, future and historical weather.}
+  spec.homepage      = "https://www.apixu.com/"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = "exe"
