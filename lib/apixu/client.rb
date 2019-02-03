@@ -45,5 +45,13 @@ module Apixu
     def forecast query, days=1
       request url(:forecast), q: query, days: days
     end
+
+    def history query, since
+      if ! since.instance_of?(Date)
+        raise ArgumentError.new("Param \"since\" must be a date")
+      end
+
+      request url(:history), q: query, dt: since.strftime("%Y-%m-%d")
+    end
   end
 end

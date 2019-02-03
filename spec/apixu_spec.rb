@@ -60,4 +60,19 @@ describe Apixu::Client do
 
     expect(result.length).to be > 0
   end
+
+  it 'supports for weather history' do
+    result = env_client.history "Paris", since=Date.today()
+
+    expect(result).to include("location")
+    expect(result).to include("forecast")
+    expect(result["forecast"]).to include("forecastday")
+  end
+
+  it 'supports for weather history error' do
+    expect {
+      env_client.history "Paris", since=""
+    } .to raise_error(ArgumentError)
+  end
+
 end
