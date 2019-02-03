@@ -75,4 +75,10 @@ describe Apixu::Client do
     } .to raise_error(ArgumentError)
   end
 
+  it 'supports for search' do
+    result = env_client.search "London"
+
+    expect(result.length).to be > 0
+  end
+
 end

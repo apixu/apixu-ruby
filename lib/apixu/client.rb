@@ -53,5 +53,9 @@ module Apixu
 
       request url(:history), q: query, dt: since.strftime("%Y-%m-%d")
     end
+
+    def search query
+      request url(:search), q: query
+    end
   end
 end
