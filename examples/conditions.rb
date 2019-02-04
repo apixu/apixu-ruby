@@ -1,10 +1,13 @@
+require 'bundler/setup'
 require 'apixu'
 
 client = Apixu::Client.new ENV["APIXUKEY"]
 
 conditions = client.conditions
 
-conditions.each { |condition| puts condition["code"], condition["icon"], "\n\n" }
+conditions.each do |condition|
+  puts condition["code"], condition["icon"], "\n"
+end
 
 =begin
 [
