@@ -6,7 +6,7 @@ describe Apixu::Client do
   end
 
   it 'allows creating new clients' do
-    expect(Apixu::Client.new 'key').to be_an_instance_of(Apixu::Client)
+    expect(Apixu::Client.new('key')).to be_an_instance_of(Apixu::Client)
   end
 
   def client
@@ -35,7 +35,7 @@ describe Apixu::Client do
   end
 
   it 'retrieves historical weather information by query and date' do
-    result = client.history 'Paris', Date.today()
+    result = client.history 'Paris', Date.today
     expect(result).to match_json_schema('history')
   end
 
