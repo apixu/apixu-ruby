@@ -1,14 +1,14 @@
 require 'bundler/setup'
 require 'apixu'
 
-client = Apixu::Client.new ENV["APIXUKEY"]
+client = Apixu::Client.new ENV['APIXUKEY']
 
-current = client.current "London"
+current = client.current 'London'
 
-puts current["location"]["name"]
-puts current["location"]["region"]
+puts current['location']['name']
+puts current['location']['region']
 
-puts current["current"]["last_updated_epoch"]
+puts current['current']['last_updated_epoch']
 
 =begin
 {

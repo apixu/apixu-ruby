@@ -1,18 +1,18 @@
 require 'bundler/setup'
 require 'apixu'
 
-client = Apixu::Client.new ENV["APIXUKEY"]
+client = Apixu::Client.new ENV['APIXUKEY']
 
-forecast = client.forecast "London", 3
+forecast = client.forecast 'London', 3
 
-puts forecast["location"]["name"]
+puts forecast['location']['name']
 
-puts forecast["current"]["last_updated_epoch"]
+puts forecast['current']['last_updated_epoch']
 
-days = forecast["forecast"]["forecastday"]
+days = forecast['forecast']['forecastday']
 
 days.each do |day|
-  puts day["date"], day["day"]["maxtemp_c"], "\n"
+  puts day['date'], day['day']['maxtemp_c'], "\n"
 end
 
 =begin

@@ -4,6 +4,6 @@ require 'apixu'
 
 Dotenv.overload
 
-client = Apixu::Client.new ENV["APIXUKEY"]
-result = client.search "London"
+client = Apixu::Client.new ENV['APIXUKEY']
+result = client.search 'London'
 puts result

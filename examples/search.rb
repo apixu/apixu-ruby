@@ -1,12 +1,12 @@
 require 'bundler/setup'
 require 'apixu'
 
-client = Apixu::Client.new ENV["APIXUKEY"]
+client = Apixu::Client.new ENV['APIXUKEY']
 
-search = client.search "London"
+search = client.search 'London'
 
 search.each do |location|
-  puts location["id"], location["name"], location["region"], "\n"
+  puts location['id'], location['name'], location['region'], "\n"
 end
 
 =begin

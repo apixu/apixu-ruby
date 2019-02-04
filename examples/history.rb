@@ -1,16 +1,16 @@
 require 'bundler/setup'
 require 'apixu'
 
-client = Apixu::Client.new ENV["APIXUKEY"]
+client = Apixu::Client.new ENV['APIXUKEY']
 
-history = client.history "London", Date.today.prev_day
+history = client.history 'London', Date.today.prev_day
 
-puts history["location"]["name"]
+puts history['location']['name']
 
-days = history["forecast"]["forecastday"]
+days = history['forecast']['forecastday']
 
 days.each do |day|
-  puts day["date"], day["day"]["maxtemp_c"], "\n"
+  puts day['date'], day['day']['maxtemp_c'], "\n"
 end
 
 =begin
