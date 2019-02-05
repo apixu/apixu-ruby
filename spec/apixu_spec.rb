@@ -50,9 +50,9 @@ describe Apixu::Client do
     expect(result).to match_json_schema('search')
   end
 
-  it 'raises http error when query is empty' do
+  it 'raises error when query is empty' do
     expect do
       client.search ''
-    end.to raise_error(RestClient::BadRequest)
+    end.to raise_error(Apixu::Errors::Request)
   end
 end

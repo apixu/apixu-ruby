@@ -40,24 +40,39 @@ module Apixu
       request url(:search), q: query
     end
 
-    private def url(endpoint)
+    private
+
+    def url(endpoint)
       "#{API_URL}/#{API_VERSION}/#{endpoint}.#{FORMAT}"
     end
 
-    private def request(url, params = {})
+    def request(url, params = {})
       params['key'] = @key
-      result = JSON.parse(RestClient::Request.execute(
-                            method: :get,
-                            url: url + '?' + URI.encode_www_form(params),
-                            params: params,
-                            timeout: HTTP_TIMEOUT
-                          ))
 
-      if result.is_a?(Hash) && result['error']
-        raise Errors::Request.new(result['error']['code'], result['error']['message'])
+      RestClient::Request.execute(
+        method: :get,
+        url: url + '?' + URI.encode_www_form(params),
+        params: params,
+        timeout: HTTP_TIMEOUT
+      ) do |response, _request, result|
+        case response.code
+        when 301, 302, 307
+          response.follow_redirection
+        when 500
+          raise Errors::Request.new(500, 'Internal Server Error')
+        else
+          result = JSON.parse(response)
+
+          if result.is_a?(Hash) && result['error']
+            raise Errors::Request.new(
+              result['error']['code'],
+              result['error']['message']
+            )
+          end
+
+          result
+        end
       end
-
-      result
     end
   end
 end
