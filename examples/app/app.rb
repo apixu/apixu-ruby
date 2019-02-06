@@ -1,4 +1,4 @@
-require 'bundler/setup'
+require 'bundler/setup' # required because Apixu is installed directly from Github
 require 'dotenv'
 require 'apixu'
 
