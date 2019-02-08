@@ -1,0 +1,4 @@
+#...
+
+gem 'apixu', git: 'https://github.com/apixu/apixu-ruby.git', tag: 'vX.X.X'
+gem 'dotenv-rails'
