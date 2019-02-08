@@ -1,41 +1,79 @@
-# Apixu
+# Apixu Ruby
 
-This is the client library for apixu's weather api.
+Ruby library for [Apixu Weather API](https://www.apixu.com/api.aspx)
 
-## Installation
+## Requirements
+* [Ruby](https://www.ruby-lang.org/en/downloads/)
+* [Bundler](https://bundler.io/)
+* [Git](https://git-scm.com/downloads) (optional)
 
-Add this line to your application's Gemfile:
+## Install Apixu client
 
-```ruby
-gem 'apixu'
+Choose the version you want to install from the [releases page](https://github.com/apixu/apixu-ruby/releases)
+or choose `master` to install the latest updates.
+
+#### Gemfile
+
+Add to your Gemfile:
+```
+gem 'apixu', git: 'https://github.com/apixu/apixu-ruby.git', tag: 'vX.X.X'
+```
+or
+```
+gem 'apixu', git: 'https://github.com/apixu/apixu-ruby.git', branch: 'master'
 ```
 
-And then execute:
+Then run:
+```
+bundle install
+```
 
-    $ bundle
+Add this to your app (required because the library is installed directly from Github):
+```
+require 'bundler/setup'
+```
 
-Or install it yourself as:
+#### Manually
+```
+wget https://github.com/apixu/apixu-ruby/archive/vX.X.X.tar.gz # or master.tar.gz
+tar -xzf vX.X.X.tar.gz
+```
 
-    $ gem install apixu
+Add to your Gemfile:
+```
+gem 'apixu', path: '/path/to/apixu-ruby-X.X.X'
+```
+
+Then run:
+```
+bundle install
+```
+
+Add this to your app (required because the library is installed from local path):
+```
+require 'bundler/setup'
+```
 
 ## Usage
 
+See the [examples](./examples).
 
-```ruby
-> require 'apixu'
-> client = Apixu::Client.new "<APIXU KEY>"
-> client.current "Paris"
-{ "current" => <...>, "location" => <...> }
-> client.forecast "Paris", days=3 # days is an optional parameter.
-{ "current" => <...>, "forecast" => <...>, "location" => <...>}
+```
+APIXUKEY=yourapikey ruby examples/<file>.rb
 ```
 
+## Documentation
+
+https://www.apixu.com/doc/
+
 ## Development
+
+#### Directly on your machine
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, to
 test, run:
 
-    TEST_APIXU_KEY=<YOUR APIXU KEY> rake
+    APIXUKEY=yourapikey rake
 
 You can also run `bin/console` for an interactive prompt that will allow you to
 experiment.
@@ -46,20 +84,21 @@ release a new version, update the version number in `version.rb`, and then run
 git commits and tags, and push the `.gem` file to
 [rubygems.org](https://rubygems.org).
 
-## Tests
+#### With Docker
 
-The output for a successful test run would look something like this:
+See [Makefile](Makefile).
 
-    $ rake
-    Apixu::Client
-      has a version number
-      allows creating new clients
-      stores API key
-      supports API key environment variable
-      does not allow overriding key
-      constructs urls
-      supports for querying current weather
-      supports for weather forecasts
+Run tests:
+```
+make test RUBYVERSION=2 APIXUKEY=yourapikey
+```
 
-    Finished in 9.09 seconds (files took 0.61258 seconds to load)
-    8 examples, 0 failures
+Enter environment:
+```
+make env RUBYVERSION=2 APIXUKEY=yourapikey
+```
+
+Run example file:
+```
+make run RUBYVERSION=2 APIXUKEY=yourapikey FILE=examples/search.rb
+```

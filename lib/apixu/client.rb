@@ -1,42 +1,78 @@
 require 'apixu/errors'
 require 'rest-client'
+require 'json'
 
 module Apixu
   class Client
-    attr_reader :key
+    API_URL = 'https://api.apixu.com'.freeze
+    API_VERSION = 'v1'.freeze
+    FORMAT = 'json'.freeze
+    HTTP_TIMEOUT = 20
+    DOC_WEATHER_CONDITIONS_URL = 'https://www.apixu.com/doc/Apixu_weather_conditions'.freeze
 
-    BASE_URL = "http://api.apixu.com/v1"
+    def initialize(key)
+      @key = key
 
-    def initialize key=nil
-      @key = key || ENV["APIXU_KEY"]
+      raise Errors::InvalidKey if @key.to_s.strip.empty?
+    end
 
-      unless @key
-        raise Errors::InvalidKey
+    def conditions
+      request "#{DOC_WEATHER_CONDITIONS_URL}.#{FORMAT}"
+    end
+
+    def current(query)
+      request url(:current), q: query
+    end
+
+    def forecast(query, days = 1)
+      request url(:forecast), q: query, days: days
+    end
+
+    def history(query, since)
+      unless since.instance_of?(Date)
+        raise ArgumentError, 'Param "since" must be a date'
       end
+
+      request url(:history), q: query, dt: since.strftime('%Y-%m-%d')
     end
 
-    def url endpoint
-      "#{BASE_URL}/#{endpoint}.json"
+    def search(query)
+      request url(:search), q: query
     end
 
-    def request key, params={}
-      params["key"] = @key
-      result = JSON::parse(RestClient.get url(key), params: params)
+    private
 
-      if result["error"]
-        raise Errors::Request.new(result["error"]["code"],
-                                  result["error"]["message"])
-      else
-        result
+    def url(endpoint)
+      "#{API_URL}/#{API_VERSION}/#{endpoint}.#{FORMAT}"
+    end
+
+    def request(url, params = {})
+      params['key'] = @key
+
+      RestClient::Request.execute(
+        method: :get,
+        url: url + '?' + URI.encode_www_form(params),
+        params: params,
+        timeout: HTTP_TIMEOUT
+      ) do |response, _request, result|
+        case response.code
+        when 301, 302, 307
+          response.follow_redirection
+        when 500
+          raise Errors::Request.new(500, 'Internal Server Error')
+        else
+          result = JSON.parse(response)
+
+          if result.is_a?(Hash) && result['error']
+            raise Errors::Request.new(
+              result['error']['code'],
+              result['error']['message']
+            )
+          end
+
+          result
+        end
       end
-    end
-
-    def current query
-      request :current, q: query
-    end
-
-    def forecast query, days=1
-      request :forecast, q: query, days: days
     end
   end
 end
