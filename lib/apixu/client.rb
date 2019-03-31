@@ -24,16 +24,25 @@ module Apixu
       request url(:current), q: query
     end
 
-    def forecast(query, days = 1)
-      request url(:forecast), q: query, days: days
+    def forecast(query, days = 1, hour = nil)
+      request url(:forecast), q: query, days: days, hour: hour
     end
 
-    def history(query, since)
+    def history(query, since, to = nil)
       unless since.instance_of?(Date)
         raise ArgumentError, 'Param "since" must be a date'
       end
 
-      request url(:history), q: query, dt: since.strftime('%Y-%m-%d')
+      end_dt = nil
+      if !to.nil?
+        unless to.instance_of?(Date)
+          raise ArgumentError, 'Param "to" must be a date'
+        end
+
+        end_dt = to.strftime('%Y-%m-%d')
+      end
+
+      request url(:history), q: query, dt: since.strftime('%Y-%m-%d'), end_dt: end_dt
     end
 
     def search(query)
@@ -48,6 +57,7 @@ module Apixu
 
     def request(url, params = {})
       params['key'] = @key
+      params = params.compact
 
       RestClient::Request.execute(
         method: :get,

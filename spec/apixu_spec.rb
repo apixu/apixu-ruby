@@ -29,12 +29,12 @@ describe Apixu::Client do
     expect(result).to match_json_schema('current')
   end
 
-  it 'retrieves weather forecasts by query and number of days' do
-    result = client.forecast 'Paris', 3
+  it 'retrieves weather forecasts by query and number of days (and optional hour)' do
+    result = client.forecast 'Paris', 3, 12
     expect(result).to match_json_schema('forecast')
   end
 
-  it 'retrieves historical weather information by query and date' do
+  it 'retrieves historical weather information by query and date (and optional until date)' do
     result = client.history 'Paris', Date.today
     expect(result).to match_json_schema('history')
   end
@@ -42,6 +42,10 @@ describe Apixu::Client do
   it 'raises error if history date is invalid' do
     expect do
       client.history 'Paris', ''
+    end.to raise_error(ArgumentError)
+
+    expect do
+      client.history 'Paris', Date.today, ''
     end.to raise_error(ArgumentError)
   end
 
